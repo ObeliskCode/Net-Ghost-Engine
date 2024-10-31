@@ -14,7 +14,7 @@ python Tools/blender.py
 
 ## Features Implemented
 
-#### Animated 3D models, Animation Blending, Particle System, Rigid Body Ph>
+#### Animated 3D models, Animation Blending, Particle System, Rigid Body Physics, Advanced Lighting, Directional/Point Shadows, Object Highlighting (Stencil Testing), Entity Component System, GUI, MultiThreaded Audio (OpenAL)
 
 ## Features To-Do
 
