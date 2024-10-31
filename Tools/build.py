@@ -1204,6 +1204,12 @@ if not "--wasm" in sys.argv:
 		"-lstdc++",
 	]
 
+# [TODO] test glm install
+if not os.path.isdir("/usr/include/glm"):
+	cmd = "sudo apt install libglm-dev"
+	print(cmd)
+	subprocess.check_call(cmd.split())
+
 # [TODO] fix automatic install of glfw
 GLFW_HEADER = "/usr/include/GLFW/glfw3.h"
 if not os.path.isfile(GLFW_HEADER):
