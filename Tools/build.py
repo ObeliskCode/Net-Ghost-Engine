@@ -586,7 +586,7 @@ def genmain( gen_ctypes=None, gen_js=None, basis_universal=True ):
 			cmd = [BLENDER]
 			if blend:
 				cmd.append(blend)
-			cmd += ["--background", "--python", "./ghostblender.py", "--", "--dump"]
+			cmd += ["--background", "--python", "./blender.py", "--", "--dump"]
 			print(cmd)
 			subprocess.check_call(cmd)
 			info = json.loads(open("/tmp/dump.json").read())
@@ -1064,6 +1064,7 @@ def emsdk_update():
 
 
 __thisdir = os.path.split(os.path.abspath(__file__))[0]
+__pardir = os.path.split(os.path.abspath(os.path.join(__file__, os.pardir)))[0]
 EMSDK = os.path.join(__thisdir, "emsdk")
 
 if "--wasm" in sys.argv and not os.path.isdir(EMSDK):
@@ -1141,9 +1142,9 @@ else:
 	C = "gcc"
 
 
-srcdir = os.path.join(__thisdir, "Source")
+srcdir = os.path.join(__pardir, "Source")
 assert os.path.isdir(srcdir)
-asset_dir = os.path.join(__thisdir, "Resources")
+asset_dir = os.path.join(__pardir, "Resources")
 assert os.path.isdir(asset_dir)
 shaders_dir = os.path.join(asset_dir, "shaders")
 assert os.path.isdir(shaders_dir)
