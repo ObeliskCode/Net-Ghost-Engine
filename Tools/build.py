@@ -1204,6 +1204,13 @@ if not "--wasm" in sys.argv:
 		"-lstdc++",
 	]
 
+# [TODO] fix automatic install of glfw
+GLFW_HEADER = "/usr/include/GLFW/glfw3.h"
+if not os.path.isfile(GLFW_HEADER):
+	cmd = "sudo apt-get install libglfw3-dev"
+	print(cmd)
+	subprocess.check_call(cmd.split())
+
 glew = "/usr/include/GL/glew.h"
 if not os.path.isfile(glew):
 	if "fedora" in os.uname().nodename:
