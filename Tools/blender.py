@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import subprocess, sys, os
+
+## @Environment
+# Call the OS specific install tools for build libraries
+##
+
 _thisdir = os.path.split(os.path.abspath(__file__))[0]
 
 if "--blender-install" in sys.argv:
@@ -52,15 +57,14 @@ if not bpy:
 	subprocess.check_call(command)
 	sys.exit()
 
-
-## Imports ##
 assert bpy
+
+## blender imports ##
 import math, mathutils, json
 from http.server import HTTPServer
 from http.server import BaseHTTPRequestHandler
 
-
-## Libs ##
+## basis_u ##
 BUDIR = os.path.join(_thisdir,'basis_universal')
 
 if not os.path.isdir(BUDIR):
@@ -75,6 +79,14 @@ BASISU = os.path.join(BUDIR, 'bin/basisu')
 assert os.path.isfile(BASISU)
 
 
+if "--debug" in sys.argv:
+	builder_script = os.path.join(_thisdir, "build.py")
+	print("builder_script:", builder_script)
+	assert os.path.isfile(builder_script)
+
+## @bpy
+# dump scene into json file for build.py
+##
 def netghost2json():
 	dump = {}
 	camdump = {}
@@ -165,7 +177,9 @@ def netghost2json():
 		info['javascript'] = js
 	return json.dumps(info)
 
-
+## @Test
+# possibly included code
+##
 def test():
 	txt = bpy.data.texts.new(name="my.c++.py")
 	txt.from_string(TEST2)
@@ -181,7 +195,9 @@ def test():
 	txt.from_string(TEST_GLSL_FRAG)
 	ob.netghost_glsl_fragment = txt
 
-
+## @main
+# basic logic for main
+##
 def flagloop():
 	if __name__ == "__main__":
 		if "--dump" in sys.argv:
@@ -191,13 +207,9 @@ def flagloop():
 		elif "--test" in sys.argv:
 			test()
 
-
-if "--debug" in sys.argv:
-	builder_script = os.path.join(_thisdir, "build.py")
-	print("builder_script:", builder_script)
-	assert os.path.isfile(builder_script)
-
-## NetGhost Blender DNA/RNA
+## @bpy
+# define modifications to bpy to include on startup
+##
 MAX_SCRIPTS_PER_OBJECT = 8
 for i in range(MAX_SCRIPTS_PER_OBJECT):
 	setattr(
