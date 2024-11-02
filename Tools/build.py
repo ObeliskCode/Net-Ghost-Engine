@@ -1008,6 +1008,17 @@ def test_exe():
 		assimp=True,
 		basis_universal=False,
 		gen_main=False)
+
+	__pardir = os.path.split(os.path.abspath(os.path.join(__file__, os.pardir)))[0]
+
+	# possibly install models if needed
+	models_dir = os.path.join(__pardir, "Resources/models")
+	if len(os.listdir(models_dir)) <= 1:  ## .gitignore :)
+		cmd = "git clone --depth 1 https://github.com/n6garcia/Obelisk-Models.git"
+		print(cmd)
+		subprocess.check_call(cmd.split(), cwd=models_dir)
+		os.system("mv -v %s/Obelisk-Models/* %s/." % (models_dir, models_dir))
+
 	if "--windows" in sys.argv:
 		cmd = ["/tmp/obelisk.exe"]
 	elif "--gdb" in sys.argv:
