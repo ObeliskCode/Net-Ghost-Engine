@@ -184,13 +184,13 @@ void main()
 	//FragmentColor = pointLight() + direcLight();
 	//FragmentColor = direcLight();
 
-	vec4 output = vec4(0.0);
-	output += direcLight();
+	vec4 tmp = vec4(0.0);
+	tmp += direcLight();
 	//for(int i = 0; i < 2; i++){
-	  //  output += pointLight(pointLights[i], shadowCubeMap[i]);
+	  //  tmp += pointLight(pointLights[i], shadowCubeMap[i]);
 	//}
-	output += pointLight(pointLights[0], shadowCubeMap[0]);
-	output += pointLight(pointLights[1], shadowCubeMap[1]);
+	tmp += pointLight(pointLights[0], shadowCubeMap[0]);
+	tmp += pointLight(pointLights[1], shadowCubeMap[1]);
 
-    FragmentColor = output;
+    FragmentColor = tmp;
 }
