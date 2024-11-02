@@ -805,7 +805,7 @@ def gen_js_wrapper( info ):
 ##
 def build(
 	shared=True, assimp=False, wasm=False, debug_shaders="--debug-shaders" in sys.argv,
-	gen_ctypes=False, basis_universal=True,
+	gen_ctypes=False, basis_universal=True, gen_main=True,
 ):
 
 	if wasm: gen_js = {}
@@ -813,6 +813,8 @@ def build(
 	cpps = []
 	obfiles = []
 	for file in os.listdir(srcdir):
+		if file == "Main.cpp" and gen_main:
+			continue
 		if file.endswith(".c"):
 			## this is just for drwave
 			ofile = "/tmp/%s.o" % file
@@ -863,23 +865,23 @@ def build(
 		subprocess.check_call(cmd)
 		obfiles.append(buo)
 
-	tmp_main = "/tmp/__main__.cpp"
-	tmpo = tmp_main + ".o"
-	obfiles.append(tmpo)
-	if '--wasm' in sys.argv:
-		open(tmp_main, "w").write(genmain( gen_js=gen_js))
-	else:
-		open(tmp_main, "w").write(genmain( gen_ctypes=gen_ctypes))
-	cmd = [CC, "-std=c++20", "-c", "-fPIC", "-o", tmpo, tmp_main]
-	if not assimp:
-		cmd.append("-DNOASS")
-	if debug_shaders:
-		cmd.append("-DDEBUG_SHADERS")
-
-	cmd += includes
-	cmd += hacks
-	print(cmd)
-	subprocess.check_call(cmd)
+	if gen_main:
+		tmp_main = "/tmp/__main__.cpp"
+		tmpo = tmp_main + ".o"
+		obfiles.append(tmpo)
+		if '--wasm' in sys.argv:
+			open(tmp_main, "w").write(genmain( gen_js=gen_js))
+		else:
+			open(tmp_main, "w").write(genmain( gen_ctypes=gen_ctypes))
+		cmd = [CC, "-std=c++20", "-c", "-fPIC", "-o", tmpo, tmp_main]
+		if not assimp:
+			cmd.append("-DNOASS")
+		if debug_shaders:
+			cmd.append("-DDEBUG_SHADERS")
+		cmd += includes
+		cmd += hacks
+		print(cmd)
+		subprocess.check_call(cmd)
 
 	os.system("ls -lh /tmp/*.o")
 
@@ -999,7 +1001,7 @@ def test_python():
 #
 ##
 def test_exe():
-	exe = build(shared=False)
+	exe = build(shared=False,assimp=True,basis_universal=False)
 	if "--windows" in sys.argv:
 		cmd = ["/tmp/obelisk.exe"]
 	elif "--gdb" in sys.argv:
@@ -1268,5 +1270,7 @@ if __name__ == "__main__":
 			test_ems()
 		elif "--wasm" in sys.argv:
 			test_wasm()
+		elif "--main" in sys.argv:
+			test_exe()
 		else:
 			test_python()
