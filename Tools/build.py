@@ -1001,7 +1001,11 @@ def test_python():
 #
 ##
 def test_exe():
-	exe = build(shared=False,assimp=True,basis_universal=False)
+	exe = build(
+		shared=False,
+		assimp=True,
+		basis_universal=False,
+		gen_main=False)
 	if "--windows" in sys.argv:
 		cmd = ["/tmp/obelisk.exe"]
 	elif "--gdb" in sys.argv:
@@ -1159,7 +1163,7 @@ includes = [
 	"-I" + srcdir,
 	"-I/usr/include/freetype2",
 	"-I"+os.path.join(__thisdir,'basis_universal/transcoder')
-]
+] ## [TODO] change include with build option
 
 if "--wasm" in sys.argv:
 	includes += [
@@ -1191,7 +1195,7 @@ libs = [
 	"-lGLEW",
 	"-lglfw",
 	"-lopenal",
-	"-lzstd", # fixes linker error on Linux 6.8.0-41 [Noel]
+	#"-lzstd", # fixes linker error on Linux 6.8.0-41 [Noel]
 ]
 
 if not "--wasm" in sys.argv:
