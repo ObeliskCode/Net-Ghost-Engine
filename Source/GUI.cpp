@@ -1,8 +1,12 @@
 #include "GUI.h"
 
 GUI* GUI::instance = nullptr; // definition class variable
-extern unsigned char __netghost_font__[];
-extern unsigned int   __netghost_font_size__;
+
+// macros ill-defined here? better compile macro use.
+#ifdef USE_EXTERN_FONTS
+	extern unsigned char __netghost_font__[];
+	extern unsigned int   __netghost_font_size__;
+#endif
 
 GUI::GUI() {
 	FT_Library ft;
@@ -13,7 +17,7 @@ GUI::GUI() {
 	}
 
 	FT_Face face;
-	#ifdef USE_EXTERN_FONTS
+	#ifndef USE_EXTERN_FONTS
 		if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
 		{
 			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;

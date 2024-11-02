@@ -878,6 +878,8 @@ def build(
 			cmd.append("-DNOASS")
 		if debug_shaders:
 			cmd.append("-DDEBUG_SHADERS")
+		if gen_main:
+			cmd.append("-DUSE_EXTERN_FONTS")
 		cmd += includes
 		cmd += hacks
 		print(cmd)
