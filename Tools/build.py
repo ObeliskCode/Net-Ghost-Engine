@@ -1174,9 +1174,13 @@ hacks = [
 
 includes = [
 	"-I" + srcdir,
-	"-I/usr/include/freetype2",
-	"-I"+os.path.join(__thisdir,'basis_universal/transcoder')
-] ## [TODO] change include with build option
+	"-I/usr/include/freetype2",	
+]
+
+if not "--main" in sys.argv:
+	includes += [
+		"-I"+os.path.join(__thisdir,'basis_universal/transcoder'),
+	]
 
 if "--wasm" in sys.argv:
 	includes += [
