@@ -32,11 +32,11 @@
 #include "Skybox.h"
 //#include "SkeletalModel.h"
 //#include "Skeleton.h"
-#include "Light.h"
+//#include "Light.h"
 //#include "Animator.h"
 #include "Input.h"
 #include "ParticleRenderer.h"
-#include "LightSystem.h"
+//#include "LightSystem.h"
 #include "ParticleSystem.h"
 #include "Transform.h"
 #include "QuadRenderer.h"
@@ -426,18 +426,18 @@ public:
     unsigned int benchID;
     unsigned int tentID;
     unsigned int quadID;
-    unsigned int girlID;
+    //unsigned int girlID;
     unsigned int cartID;
-    unsigned int wolfID;
-    unsigned int sitID;
-    unsigned int light1ID;
-    unsigned int light2ID;
+    //unsigned int wolfID;
+    //unsigned int sitID;
+    //unsigned int light1ID;
+    //unsigned int light2ID;
     unsigned int cigEnts[5];
     unsigned int axisID, sphere1ID, sphere2ID, capsuleID;
     unsigned int chID;
 
-    unsigned int depthMapFBO;
-    unsigned int depthMap;
+    //unsigned int depthMapFBO;
+    //unsigned int depthMap;
 
     Skybox *sky;
     Shader skyProgram;
@@ -568,16 +568,16 @@ public:
 
         // warning these need to be deleted!
         globals.rigProgram = Shader("rigVert.glsl", "mdlFrag.glsl");
-        globals.lightProgram = Shader("rigVert.glsl", "lightFrag.glsl");
-        globals.animProgram = Shader("animVert.glsl", "mdlFrag.glsl");
-        globals.noTexAnimProgram = Shader("animVert.glsl", "noTexFrag.glsl");
+        //globals.lightProgram = Shader("rigVert.glsl", "lightFrag.glsl");
+        //globals.animProgram = Shader("animVert.glsl", "mdlFrag.glsl");
+        //globals.noTexAnimProgram = Shader("animVert.glsl", "noTexFrag.glsl");
         globals.wireShader = Shader("wireVert.glsl", "wireFrag.glsl");
-        globals.shadowShader = Shader("shadowVert.glsl", "shadowFrag.glsl");
-        globals.animShadowShader = Shader("animShadowVert.glsl", "shadowFrag.glsl");
+        //globals.shadowShader = Shader("shadowVert.glsl", "shadowFrag.glsl");
+        //globals.animShadowShader = Shader("animShadowVert.glsl", "shadowFrag.glsl");
         globals.cellShader = Shader("rigVert.glsl", "cellFrag.glsl");
-        globals.animCellShader = Shader("animVert.glsl", "cellFrag.glsl");
-        globals.pointShadowShader = Shader("pointShadowVert.glsl", "pointShadowFrag.glsl", "pointShadowGeom.glsl");
-        globals.animPointShadowShader = Shader("animPointShadowVert.glsl", "pointShadowFrag.glsl", "pointShadowGeom.glsl");
+        //globals.animCellShader = Shader("animVert.glsl", "cellFrag.glsl");
+        //globals.pointShadowShader = Shader("pointShadowVert.glsl", "pointShadowFrag.glsl", "pointShadowGeom.glsl");
+        //globals.animPointShadowShader = Shader("animPointShadowVert.glsl", "pointShadowFrag.glsl", "pointShadowGeom.glsl");
 
         unsigned int entID;
         Entity e;
@@ -738,12 +738,13 @@ public:
         ecs.addCamera(entID, globals.camera);
         ecs.addTransform(entID, trf);*/
 
-        Light *lampLight = new Light(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f), glm::vec3(-20.0f, 13.2f, 28.0f));
-        lightsys.lights.push_back(lampLight);
+        //Light *lampLight = new Light(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f), glm::vec3(-20.0f, 13.2f, 28.0f));
+        //lightsys.lights.push_back(lampLight);
 
-        Light *light2 = new Light(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f), glm::vec3(-20.0f, 10.0f, -20.0f));
-        lightsys.lights.push_back(light2);
+        //Light *light2 = new Light(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f), glm::vec3(-20.0f, 10.0f, -20.0f));
+        //lightsys.lights.push_back(light2);
 
+        /*
         trf = new Transform();
         entID = ecs.createEntity();
         light1ID = entID;
@@ -770,17 +771,17 @@ public:
         ecs.addTransform(entID, trf);
         e = ecs.getEntity(entID);
         e.light_flag = 1;
-        ecs.updateEntity(e);
+        ecs.updateEntity(e);*/
 
-        lampLight->linkShader(globals.rigProgram);
+        //lampLight->linkShader(globals.rigProgram);
         //lampLight->linkShader(globals.animProgram);
         //lampLight->linkShader(globals.noTexAnimProgram);
-        lampLight->linkShader(globals.lightProgram);
+        //lampLight->linkShader(globals.lightProgram);
 
-        lightsys.linkShader(globals.rigProgram);
+        //lightsys.linkShader(globals.rigProgram);
         //lightsys.linkShader(globals.animProgram);
         //lightsys.linkShader(globals.noTexAnimProgram);
-        lightsys.linkShader(globals.lightProgram);
+        //lightsys.linkShader(globals.lightProgram);
 
         // QUAD
         entID = ecs.createEntity();
@@ -888,6 +889,7 @@ public:
 
         skyProgram = Shader("skyVert.glsl", "skyFrag.glsl");
 
+        /*
         glGenFramebuffers(1, &depthMapFBO);
 
         glGenTextures(1, &depthMap);
@@ -928,6 +930,7 @@ public:
         //glUniformMatrix4fv(glGetUniformLocation(globals.animShadowShader.ID, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
         globals.depthCubeMap = lampLight->lightShadow->getMap();
+        */
 
         return 1;
     }
@@ -1226,6 +1229,7 @@ public:
 
         //ecs.advanceEntityAnimations(frameTime);
 
+        /*
         { // directional shadow draw pass
             glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
             glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -1243,7 +1247,7 @@ public:
         linkModelShaderUniforms(globals.rigProgram);
         linkModelShaderUniforms(globals.lightProgram);
         //linkModelShaderUniforms(globals.animProgram);
-        //linkModelShaderUniforms(globals.noTexAnimProgram);
+        //linkModelShaderUniforms(globals.noTexAnimProgram);*/
 
         ecs.DrawEntities(); // crashing here!
 
