@@ -1019,6 +1019,14 @@ def test_exe():
 		subprocess.check_call(cmd.split(), cwd=models_dir)
 		os.system("mv -v %s/Obelisk-Models/* %s/." % (models_dir, models_dir))
 
+	## ISSUE [1] gdb bt (ubuntu clean install seg-fault)
+	# #0  __memmove_evex_unaligned_erms () at ../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:394
+	# No locals
+	# #1  0x00007ffff485fc9c in ?? () from /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so 
+	#
+	# fix? : https://github.com/wasserth/TotalSegmentator/issues/278
+	# sudo apt-get install --reinstall libgl1-mesa-glx libgl1-mesa-dri
+
 	if "--windows" in sys.argv:
 		cmd = ["/tmp/obelisk.exe"]
 	elif "--gdb" in sys.argv:

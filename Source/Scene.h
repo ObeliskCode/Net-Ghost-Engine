@@ -17,7 +17,7 @@
 
 #include "btBulletDynamicsCommon.h"
 
-#include "Daemon.h"
+//#include "Daemon.h"
 #include "Globals.h"
 #include "Shader.h"
 #include "Audio.h"
@@ -30,10 +30,10 @@
 #include "Particle.h"
 #include "Physics.h"
 #include "Skybox.h"
-#include "SkeletalModel.h"
-#include "Skeleton.h"
+//#include "SkeletalModel.h"
+//#include "Skeleton.h"
 #include "Light.h"
-#include "Animator.h"
+//#include "Animator.h"
 #include "Input.h"
 #include "ParticleRenderer.h"
 #include "LightSystem.h"
@@ -93,11 +93,25 @@ public:
     virtual int loadResources(GLFWwindow *window) = 0;
     virtual int tick(GLFWwindow *window, double delta) = 0;
     virtual int drawFrame(GLFWwindow *window, double frameTime) = 0;
-    virtual int cleanup() = 0;
+    //virtual int cleanup() = 0;
+
+    int cleanup() {
+        // careful with these! not well written![BROKEN ATM]
+        LightSystem::destruct();
+        ParticleSystem::destruct();
+        Audio::destruct();
+        GUI::destruct();
+        ECS::destruct();
+        Physics::destruct();
+        Globals::destruct();
+        Input::destruct();
+        //Daemon::destruct();
+        return 1;
+    }
 
     // [TODO] fix interopt problem with these members!
     ECS &ecs = ECS::get();
-    Daemon &dae = Daemon::get();
+    //Daemon &dae = Daemon::get();
     GUI &gui = GUI::get();
     Globals &globals = Globals::get();
     LightSystem &lightsys = LightSystem::get();
@@ -207,21 +221,6 @@ public:
         return 1;
     }
 
-    int cleanup() override
-    {
-        // careful with these! not well written![BROKEN ATM]
-        LightSystem::destruct();
-        ParticleSystem::destruct();
-        Audio::destruct();
-        GUI::destruct();
-        ECS::destruct();
-        Physics::destruct();
-        Globals::destruct();
-        Input::destruct();
-        Daemon::destruct();
-        return 1;
-    }
-
 private:
 };
 
@@ -324,6 +323,8 @@ public:
         globals.camera->setPosition(glm::vec3(0.0f, 10.0f, 20.0f));
         globals.camera->setOrientation(glm::normalize(glm::vec3(0.0f, -10.0f, -20.0f)));
 
+        glClearColor(0.08f, 0.11f, 0.5f, 1.0f);
+
         return 1;
     }
 
@@ -396,21 +397,6 @@ public:
         return 1;
     }
 
-    int cleanup() override
-    {
-        // careful with these! not well written![BROKEN ATM]
-        LightSystem::destruct();
-        ParticleSystem::destruct(); // questioning this one..
-        Audio::destruct();
-        GUI::destruct();
-        ECS::destruct();
-        Physics::destruct();
-        Globals::destruct();
-        Input::destruct(); // do i ever need to destruct this one?
-        Daemon::destruct();
-        return 1;
-    }
-
 private:
 };
 
@@ -466,7 +452,7 @@ public:
 
     Shader quadProgram;
 
-    Animator *mator;
+    //Animator *mator;
 
     TestRoom()
     {
@@ -706,6 +692,7 @@ public:
         ecs.addPhysTransform(entID, new Transform());
         ecs.addWireFrame(entID, 6.0f, 4.0f, 6.0f);
 
+        /*
         trf = new Transform();
         entID = ecs.createEntity();
         wolfID = entID;
@@ -749,7 +736,7 @@ public:
         ecs.addAnimator(entID, mator);
         ecs.addShader(entID, globals.animProgram);
         ecs.addCamera(entID, globals.camera);
-        ecs.addTransform(entID, trf);
+        ecs.addTransform(entID, trf);*/
 
         Light *lampLight = new Light(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f), glm::vec3(-20.0f, 13.2f, 28.0f));
         lightsys.lights.push_back(lampLight);
@@ -786,13 +773,13 @@ public:
         ecs.updateEntity(e);
 
         lampLight->linkShader(globals.rigProgram);
-        lampLight->linkShader(globals.animProgram);
-        lampLight->linkShader(globals.noTexAnimProgram);
+        //lampLight->linkShader(globals.animProgram);
+        //lampLight->linkShader(globals.noTexAnimProgram);
         lampLight->linkShader(globals.lightProgram);
 
         lightsys.linkShader(globals.rigProgram);
-        lightsys.linkShader(globals.animProgram);
-        lightsys.linkShader(globals.noTexAnimProgram);
+        //lightsys.linkShader(globals.animProgram);
+        //lightsys.linkShader(globals.noTexAnimProgram);
         lightsys.linkShader(globals.lightProgram);
 
         // QUAD
@@ -937,8 +924,8 @@ public:
         globals.shadowShader.Activate();
         glUniformMatrix4fv(glGetUniformLocation(globals.shadowShader.ID, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-        globals.animShadowShader.Activate();
-        glUniformMatrix4fv(glGetUniformLocation(globals.animShadowShader.ID, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+        //globals.animShadowShader.Activate();
+        //glUniformMatrix4fv(glGetUniformLocation(globals.animShadowShader.ID, "lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
         globals.depthCubeMap = lampLight->lightShadow->getMap();
 
@@ -1033,7 +1020,7 @@ public:
                 globals.camera->setPosition(pos);
             }
         }
-        {
+        /*{
             if (input.getValue(GLFW_KEY_RIGHT))
                 bf += 0.02f;
             if (input.getValue(GLFW_KEY_LEFT))
@@ -1043,7 +1030,7 @@ public:
             if (bf > 1.0f)
                 bf = 1.0f;
             mator->SetBlendFactor(bf);
-        }
+        }*/
         { // update cam pos
             if (!globals.camLock)
             {
@@ -1237,7 +1224,7 @@ public:
 
         renderScene();
 
-        ecs.advanceEntityAnimations(frameTime);
+        //ecs.advanceEntityAnimations(frameTime);
 
         { // directional shadow draw pass
             glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
@@ -1255,8 +1242,8 @@ public:
 
         linkModelShaderUniforms(globals.rigProgram);
         linkModelShaderUniforms(globals.lightProgram);
-        linkModelShaderUniforms(globals.animProgram);
-        linkModelShaderUniforms(globals.noTexAnimProgram);
+        //linkModelShaderUniforms(globals.animProgram);
+        //linkModelShaderUniforms(globals.noTexAnimProgram);
 
         ecs.DrawEntities(); // crashing here!
 
@@ -1309,23 +1296,6 @@ public:
         // double elap = te - ts;
         // if (elap >= 0.03)
         // std::cerr << "frame time: " << elap << std::endl;
-        return 1;
-    }
-
-    int cleanup() override
-    {
-        delete sky;
-
-        // careful with these! not well written![BROKEN ATM]
-        LightSystem::destruct();
-        ParticleSystem::destruct();
-        Audio::destruct();
-        GUI::destruct();
-        ECS::destruct();
-        Physics::destruct();
-        Globals::destruct();
-        Input::destruct();
-        Daemon::destruct();
         return 1;
     }
 
