@@ -77,6 +77,10 @@ Shader::Shader(std::string vertexFile, std::string fragmentFile) {
 	glLinkProgram(ID);
 	checkCompileErrors(ID, "PROGRAM");
 
+	std::cout << ID << std::endl;
+	std::cout << vertPath << std::endl;
+	std::cout << fragPath << std::endl;
+
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 

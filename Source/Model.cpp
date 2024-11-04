@@ -40,6 +40,7 @@ void Model::loadModel(std::string path)
 {
 	Assimp::Importer import;
 	path = "models/" + path;
+	m_name = path;
 	//const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate);
 
@@ -151,6 +152,7 @@ void Model::Draw(Shader& shader, Camera& camera,
 }
 
 void Model::DrawShadow(Shader& shader, glm::mat4& transform){
+	std::cout << m_name << std::endl;
 	for (unsigned int i = 0; i < meshes.size(); i++) {
 		meshes[i].DrawShadow(shader, transform);
 	}

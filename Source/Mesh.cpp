@@ -88,6 +88,7 @@ void Mesh::DrawShadow(
 	Shader& shader,
 	glm::mat4 transform
 ) {
+	std::cout << shader.ID << std::endl;
 	shader.Activate();
 	m_VAO.Bind();
 

@@ -1024,8 +1024,9 @@ def test_exe():
 	# No locals
 	# #1  0x00007ffff485fc9c in ?? () from /usr/lib/x86_64-linux-gnu/dri/swrast_dri.so 
 	#
-	# fix? : https://github.com/wasserth/TotalSegmentator/issues/278
+	# fix (1) : https://github.com/wasserth/TotalSegmentator/issues/278 [Wrong]
 	# sudo apt-get install --reinstall libgl1-mesa-glx libgl1-mesa-dri
+	# 
 
 	if "--windows" in sys.argv:
 		cmd = ["/tmp/obelisk.exe"]

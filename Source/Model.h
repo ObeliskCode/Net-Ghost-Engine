@@ -26,6 +26,9 @@ public:
 
 	void DrawShadow(Shader& shader, glm::mat4& transform);
 
+	//debug
+	std::string m_name = " ";
+
 	Material mat; // this mat here may have to stay
 	// model data
 	std::vector<Mesh> meshes;
