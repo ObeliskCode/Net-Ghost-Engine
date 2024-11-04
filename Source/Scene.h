@@ -97,7 +97,7 @@ public:
 
     int cleanup() {
         // careful with these! not well written![BROKEN ATM]
-        LightSystem::destruct();
+        //LightSystem::destruct();
         ParticleSystem::destruct();
         Audio::destruct();
         GUI::destruct();
@@ -114,7 +114,7 @@ public:
     //Daemon &dae = Daemon::get();
     GUI &gui = GUI::get();
     Globals &globals = Globals::get();
-    LightSystem &lightsys = LightSystem::get();
+    //LightSystem &lightsys = LightSystem::get();
     ParticleSystem &particlesys = ParticleSystem::get();
     Physics &physics = Physics::get();
     Input &input = Input::get();
